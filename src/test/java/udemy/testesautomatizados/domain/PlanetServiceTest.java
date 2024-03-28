@@ -1,16 +1,18 @@
 package udemy.testesautomatizados.domain;
 
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static udemy.testesautomatizados.common.PlanetConstants.INVALID_PLANET;
-import static udemy.testesautomatizados.common.PlanetConstants.PLANET;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static udemy.testesautomatizados.common.PlanetConstants.*;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 //@SpringBootTest(classes = PlanetService.class)
@@ -38,5 +40,24 @@ public class PlanetServiceTest {
         when(planetRepository.save(INVALID_PLANET)).thenThrow(RuntimeException.class);
 
         assertThatThrownBy(() -> planetService.create(INVALID_PLANET)).isInstanceOf(RuntimeException.class);
+    }
+
+    @Test
+    public void getPlanet_ByExistingId_ReturnsPlanet(){
+        when(planetRepository.findById(anyLong())).thenReturn(Optional.of(PLANET));
+
+        Optional<Planet> sut = planetService.getById(1L);
+
+        assertThat(sut).isNotEmpty();
+        assertThat(sut).isEqualTo(Optional.of(PLANET));
+    }
+
+    @Test
+    public void getPlanet_ByUnexistingId_ReturnEmpty(){
+        when(planetRepository.findById(anyLong())).thenReturn(Optional.of(new Planet()));
+
+        Optional<Planet> sut = planetService.getById(5L);
+
+        assertThat(sut).isEqualTo(Optional.of(new Planet()));
     }
 }
