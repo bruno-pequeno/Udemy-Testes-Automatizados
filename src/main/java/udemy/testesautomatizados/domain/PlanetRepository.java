@@ -2,6 +2,8 @@ package udemy.testesautomatizados.domain;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface PlanetRepository extends CrudRepository<Planet, Long> {
+import java.util.Optional;
 
+public interface PlanetRepository extends CrudRepository<Planet, Long> {
+    Optional<Planet> findByName(String name);
 }
