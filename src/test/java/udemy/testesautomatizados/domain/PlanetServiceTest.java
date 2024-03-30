@@ -44,12 +44,12 @@ public class PlanetServiceTest {
 
     @Test
     public void getPlanet_ByExistingId_ReturnsPlanet(){
-        when(planetRepository.findById(anyLong())).thenReturn(Optional.of(PLANET));
+        when(planetRepository.findById(anyLong())).thenReturn(Optional.of(GET_PLANET));
 
         Optional<Planet> sut = planetService.getById(1L);
 
         assertThat(sut).isNotEmpty();
-        assertThat(sut).isEqualTo(Optional.of(PLANET));
+        assertThat(sut).isEqualTo(Optional.of(GET_PLANET));
     }
 
     @Test
@@ -59,5 +59,24 @@ public class PlanetServiceTest {
         Optional<Planet> sut = planetService.getById(5L);
 
         assertThat(sut).isEqualTo(Optional.of(new Planet()));
+    }
+
+    @Test
+    public void getPlanet_ByExistingName_ReturnsPlanet(){
+        when(planetRepository.findByName(GET_PLANET.getName())).thenReturn(Optional.of(GET_PLANET));
+
+        Optional<Planet> sut = planetService.getByName(GET_PLANET.getName());
+
+        assertThat(sut).isNotEmpty();
+        assertThat(sut).isEqualTo(Optional.of(GET_PLANET));
+    }
+
+    @Test
+    public void getPlanet_ByUnexistingName_ReturnEmpty(){
+        when(planetRepository.findByName("Lua")).thenReturn(Optional.empty());
+
+        Optional<Planet> sut = planetService.getByName("Lua");
+
+        assertThat(sut).isEmpty();
     }
 }
