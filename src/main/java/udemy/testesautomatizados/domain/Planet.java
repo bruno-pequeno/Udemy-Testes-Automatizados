@@ -32,6 +32,9 @@ public class Planet {
 
     }
 
+    public Planet(String climate, String terrain) {
+    }
+
     public Long getId() {
         return id;
     }

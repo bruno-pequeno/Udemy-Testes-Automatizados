@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import udemy.testesautomatizados.domain.Planet;
 import udemy.testesautomatizados.domain.PlanetService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/planets")
 public class PlanetController {
@@ -30,5 +32,12 @@ public class PlanetController {
     public ResponseEntity<Planet> getByName(@PathVariable("name") String name){
         return planetService.getByName(name).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Planet>> lis(@RequestParam(required = false) String terrain,
+                                            @RequestParam(required = false) String climate){
+        List<Planet> planets = planetService.list(terrain, climate);
+        return ResponseEntity.ok(planets);
     }
 }
