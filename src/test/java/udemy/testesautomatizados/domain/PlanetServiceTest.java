@@ -1,6 +1,5 @@
 package udemy.testesautomatizados.domain;
 
-import static org.assertj.core.api.InstanceOfAssertFactories.COLLECTION;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
