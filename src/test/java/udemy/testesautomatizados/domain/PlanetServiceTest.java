@@ -1,16 +1,18 @@
 package udemy.testesautomatizados.domain;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static udemy.testesautomatizados.common.PlanetConstants.*;
 
+import org.assertj.core.api.NotThrownAssert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.internal.stubbing.answers.ThrowsException;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Example;
 
@@ -109,5 +111,17 @@ public class PlanetServiceTest {
         List<Planet> sut = planetService.list(PLANET.getClimate(), PLANET.getTerrain());
 
         assertThat(sut).isEmpty();
+    }
+
+    @Test
+    public void removePlanet_WithExistingId_doesNotThrowAnyException(){
+        assertThatCode(() -> planetService.remove(1L)).doesNotThrowAnyException();
+    }
+
+    @Test
+    public void removePlanet_WithunexistingId_ThrowsException(){
+        doThrow(new RuntimeException()).when(planetRepository).deleteById(99L);
+
+        assertThatThrownBy(() -> planetService.remove(99L)).isInstanceOf(RuntimeException.class);
     }
 }
