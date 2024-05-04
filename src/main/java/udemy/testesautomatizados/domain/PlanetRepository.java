@@ -10,5 +10,8 @@ import java.util.Optional;
 public interface PlanetRepository extends CrudRepository<Planet, Long>, QueryByExampleExecutor<Planet> {
     @Override
     <S extends Planet> List<S> findAll(Example<S> example);
+
     Optional<Planet> findByName(String name);
+
+    void deleteById(Long id);
 }
