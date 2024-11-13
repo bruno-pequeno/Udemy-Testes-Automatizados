@@ -18,7 +18,7 @@ public class PlanetRespositoryTest {
     private TestEntityManager testEntityManager;
 
     @Test
-    public void createPlanet_WithValidData_ReturnsPlanets(){
+    public void createPlanet_WithValidData_ReturnsPlanet(){
         Planet planet = planetRepository.save(PLANET);
 
         Planet sut = testEntityManager.find(Planet.class, planet.getId());
@@ -34,7 +34,16 @@ public class PlanetRespositoryTest {
         Planet emptyPlanet = new Planet();
         Planet invalidPlanet = new Planet("", "", "");
 
-        assertThatThrownBy(() -> planetRepository.save(emptyPlanet));
-        assertThatThrownBy(() -> planetRepository.save(invalidPlanet));
+        assertThatThrownBy(() -> planetRepository.save(emptyPlanet)).isInstanceOf(RuntimeException.class);
+        assertThatThrownBy(() -> planetRepository.save(invalidPlanet)).isInstanceOf(RuntimeException.class);
+    }
+
+    @Test
+    public void createPlanet_WithExistingName_ThrowsException(){
+        Planet planet = testEntityManager.persistFlushFind(PLANET);
+        testEntityManager.detach(planet);
+        planet.setId(null);
+
+        assertThatThrownBy(() -> planetRepository.save(planet)).isInstanceOf(RuntimeException.class);
     }
 }

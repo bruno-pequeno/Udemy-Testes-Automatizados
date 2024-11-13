@@ -2,17 +2,19 @@ package udemy.testesautomatizados.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.Data;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 
 @Entity
+@Data
 @Table(name = "tb_planets")
 public class Planet {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty()
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @NotEmpty()
@@ -37,42 +39,9 @@ public class Planet {
     }
 
     public Planet() {
-
     }
 
     public Planet(String climate, String terrain) {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getClimate() {
-        return climate;
-    }
-
-    public void setClimate(String climate) {
-        this.climate = climate;
-    }
-
-    public String getTerrain() {
-        return terrain;
-    }
-
-    public void setTerrain(String terrain) {
-        this.terrain = terrain;
     }
 
     @Override
